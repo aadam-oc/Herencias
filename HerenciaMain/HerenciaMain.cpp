@@ -21,9 +21,13 @@
 
 using namespace std;
 
+
 const int MAP_SIZE = 10;
 BOOLEAN batallaFinalAcabada = false;
 BOOLEAN batallaAcabada = false;
+char iconoEnemigo = 'E';
+BOOLEAN showEnemies = true
+;
 
 
 void initializeMap(char map[MAP_SIZE][MAP_SIZE]) {
@@ -95,9 +99,13 @@ int main() {
         placeCharacter(map, EnemigoFinal, 'S');
 
         // Colocar enemigos en el mapa
-        for (int i = 0; i < 4; ++i) {
-            placeCharacter(map, Enemigos[i], 'E');
+        if (showEnemies == true)
+        {
+            for (int i = 0; i < 4; ++i) {
+                placeCharacter(map, Enemigos[i], iconoEnemigo);
+            }
         }
+        
 
         // Imprime el mapa
         HerenciasLibrary::HerenciasFunctions::printMap(map);
@@ -114,7 +122,7 @@ int main() {
             cout << "\n\n";
             EnemigoFinal.getStats();
             cout << "\n\n";
-            system("pause");
+            /*system("pause");*/
 
             while (batallaFinalAcabada == false && batallaAcabada == false)
             {
@@ -125,16 +133,16 @@ int main() {
                 Personaje.setAttack(Personaje.getAttack() + dañoPersonaje);
 
 
-                Sleep(500);
+                Sleep(800);
                 cout << Personaje.getName() << ": \n";
                 EnemigoFinal.setHp(EnemigoFinal.getHp() - Personaje.getAttack());
                 if (EnemigoFinal.getHp() > 0)
                 {
-                    cout << "El personaje le ha hecho " << Personaje.getAttack() << "puntos de daño al enemigo final y le quedan " << EnemigoFinal.getHp() << " de vida\n\n\n\n";
+                    cout << "El personaje le ha hecho " << Personaje.getAttack() << " puntos de daño al enemigo final y le quedan " << EnemigoFinal.getHp() << " de vida\n\n\n\n";
                 }
                 else
                 {
-                    cout << "El personaje le ha hecho " << Personaje.getAttack() << "puntos de daño al enemigo final y le quedan 0 puntos de vida\n\n\n\n";
+                    cout << "El personaje le ha hecho " << Personaje.getAttack() << " puntos de daño al enemigo final y le quedan 0 puntos de vida\n\n\n\n";
                 }
                 
                 if (Personaje.getHp() <= 0 || EnemigoFinal.getHp() <= 0)
@@ -157,11 +165,11 @@ int main() {
                     Personaje.setHp(Personaje.getHp() - EnemigoFinal.getAttack());
                     if (Personaje.getHp() > 0)
                     {
-                        cout << "El enemigo final te ha hecho " << EnemigoFinal.getAttack() << "puntos de daño y te quedan " << Personaje.getHp() << "puntos de vida\n\n\n\n";
+                        cout << "El enemigo final te ha hecho " << EnemigoFinal.getAttack() << " puntos de daño y te quedan " << Personaje.getHp() << "puntos de vida\n\n\n\n";
                     }
                     else
                     {
-                        cout << "El enemigo final te ha hecho " << EnemigoFinal.getAttack() << "puntos de daño y te quedan 0 puntos de vida\n\n\n\n";
+                        cout << "El enemigo final te ha hecho " << EnemigoFinal.getAttack() << " puntos de daño y te quedan 0 puntos de vida\n\n\n\n";
                     }
                     
                 }
@@ -190,8 +198,85 @@ int main() {
             if (Personaje.getPosition() == Enemigos[i].getPosition())
             {
                 cout << "Te has encontrado a un enemigo, ahora vas a tener que luchar contra el   \n\n\n";
+                while (batallaFinalAcabada == false && batallaAcabada == false)
+                {
+                    
+                    int dañoEnemigo = rand() % 10;
+                    int dañoPersonaje = rand() % 10;
+                    Enemigos[i].setAttack(Enemigos[i].getAttack() + dañoEnemigo);
+                    Personaje.setAttack(Personaje.getAttack() + dañoPersonaje);
 
-                return 0;
+                    Sleep(1000);
+                    system("cls");
+
+                    cout << Personaje.getName() << ": \n";
+                    Enemigos[i].setHp(Enemigos[i].getHp() - Personaje.getAttack());
+
+                    if (Enemigos[i].getHp() > 0)
+                    {
+                        cout << "El personaje le ha hecho " << Personaje.getAttack() << " puntos de daño al enemigo y le quedan " << Enemigos[i].getHp() << " de vida\n\n\n\n";
+                    }
+                    else
+                    {
+                        cout << "El personaje le ha hecho " << Personaje.getAttack() << " puntos de daño al enemigo final y le quedan 0 puntos de vida\n\n\n\n";
+                    }
+
+                    if (Personaje.getHp() <= 0 || Enemigos[i].getHp() <= 0)
+                    {
+                        if (Personaje.getHp() < Enemigos[i].getHp())
+                        {
+                            cout << RED << "Ha ganado el enemigo" << RESET;
+                            keyPressed = 's';
+                            batallaAcabada = true;
+                        }
+                        else if (Personaje.getHp() > Enemigos[i].getHp())
+                        {
+                            cout << LGREEN << "Has ganado " << RESET;
+                            keyPressed = 's';
+                            batallaAcabada = true;
+                        }
+                    }
+
+                    if (Personaje.getHp() > 0)
+                    {
+                        cout << "\n" << Enemigos[i].getName() << ": \n";
+                        Personaje.setHp(Personaje.getHp() - Enemigos[i].getAttack());
+                        if (Personaje.getHp() > 0)
+                        {
+                            cout << "El enemigo te ha hecho " << Enemigos[i].getAttack() << " puntos de daño y te quedan " << Personaje.getHp() << "puntos de vida\n\n\n\n";
+                        }
+                        else
+                        {
+                            cout << "El enemigo te ha hecho " << Enemigos[i].getAttack() << " puntos de daño y te quedan 0 puntos de vida\n\n\n\n";
+                        }
+
+                    }
+
+
+                    Sleep(500);
+                    if (Personaje.getHp() <= 0 || Enemigos[i].getHp() <= 0)
+                    {
+                        if (Personaje.getHp() < Enemigos[i].getHp())
+                        {
+                            cout << RED << "Ha ganado el enemigo" << RESET;
+                            keyPressed = 's';
+                            batallaAcabada = true;
+                        }
+                        else if (Personaje.getHp() > Enemigos[i].getHp())
+                        {
+                            cout << LGREEN << "Has ganado" << RESET;
+                            keyPressed = 's';
+                            batallaAcabada = true;
+
+                        }
+                    }
+
+                }
+                
+
+
+
+                
             }
         }
         Sleep(2);
