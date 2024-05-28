@@ -134,6 +134,7 @@ int main() {
 
 
                 Sleep(800);
+
                 cout << Personaje.getName() << ": \n";
                 EnemigoFinal.setHp(EnemigoFinal.getHp() - Personaje.getAttack());
                 if (EnemigoFinal.getHp() > 0)
