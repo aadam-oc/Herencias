@@ -189,6 +189,8 @@ int main() {
         {
             if (Personaje.getPosition() == Enemigos[i].getPosition())
             {
+                cout << "Te has encontrado a un enemigo, ahora vas a tener que luchar contra el   \n\n\n";
+
                 return 0;
             }
         }
